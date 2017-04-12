@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SignalrPractice.Models;
+using System.IO;
+using System.Web.Hosting;
 
 namespace SignalrPractice.Controllers
 {
@@ -50,7 +52,7 @@ namespace SignalrPractice.Controllers
             }
         }
 
-        //
+        //added message id photo and file extention
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
@@ -61,6 +63,8 @@ namespace SignalrPractice.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.PhotoUploadSuccess ? "Upload successful"
+                : message == ManageMessageId.FileExtensionError ? "error on photo upload"
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -321,7 +325,43 @@ namespace SignalrPractice.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
+        //try photo read carfully study
+        #region Upload Photo
+        //////////////////////////////////////////photo upload
+        [HttpPost]
+        public async Task<ActionResult> UploadPhoto(HttpPostedFileBase file)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                var user = await GetCurrentUserAsync();
+                var username = user.UserName;
+                var fileExt = Path.GetExtension(file.FileName);
+                var fnm = username + ".png";
+                if (fileExt.ToLower().EndsWith(".png") || fileExt.ToLower().EndsWith(".jpg") || fileExt.ToLower().EndsWith(".gif"))// Important for security if saving in webroot
+                {
+                    var filePath = HostingEnvironment.MapPath("~/Content/images/profile/") + fnm;
+                    var directory = new DirectoryInfo(HostingEnvironment.MapPath("~/Content/images/profile/"));
+                    if (directory.Exists == false)
+                    {
+                        directory.Create();
+                    }
+                    ViewBag.FilePath = filePath.ToString();
+                    file.SaveAs(filePath);
+                    return RedirectToAction("Index", new { Message = ManageMessageId.PhotoUploadSuccess });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { Message = ManageMessageId.FileExtensionError });
+                }
+            }
+            return RedirectToAction("Index", new { Message = ManageMessageId.Error });// PRG
+        }
 
+        #endregion Upload Photo
+        /// <summary>
+        /// //
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -372,7 +412,16 @@ namespace SignalrPractice.Controllers
             }
             return false;
         }
+        //try method get user async read carfully study
+        private async Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         public enum ManageMessageId
         {
             AddPhoneSuccess,
@@ -381,7 +430,9 @@ namespace SignalrPractice.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            PhotoUploadSuccess,
+            FileExtensionError
         }
 
 #endregion

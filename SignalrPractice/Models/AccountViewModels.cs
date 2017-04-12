@@ -64,6 +64,16 @@ namespace SignalrPractice.Models
 
     public class RegisterViewModel
     {
+        //[Display(Name = "UserPhoto")]
+        //public byte[] UserPhoto { get; set; }
+        [Required]
+        public string displayName { get; set; }
+        [Required]
+        public string age { get; set; }
+        [Required]
+        public string description { get; set; }
+
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

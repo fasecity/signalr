@@ -8,7 +8,10 @@ namespace SignalrPractice
     {
         public void Configuration(IAppBuilder app)
         {
+            app.MapSignalR();
             ConfigureAuth(app);
+            //adding signal r to staratup 
+           
         }
     }
 }

@@ -1,7 +1,33 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity;
+@{
     ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+
+}
+
+
+<br />
+
+<div>
+    @{
+       
+
+
+        var imgUrl = Url.Content("~/Content/images/profile/" + User.Identity.GetUserName() + ".png") + "?time=" + DateTime.Now.ToString();
+    }
+    <img src="@imgUrl" height="150" width="150" class="img-circle"/>
+</div>
+
+<h3>@ViewBag.displayName</h3>
+<h3>@ViewBag.age</h3>
+<h3>@ViewBag.description</h3>
+<p2>@ViewBag.list</p2>
+
+@*<img src="@Url.Action("UserPhotos", "Home" )" style="width:160px;height:160px; background: #FFFFFF;
+    margin: auto;
+    -moz-border-radius: 60px;
+    border-radius: 100px;
+    padding: 6px;
+    box-shadow: 0px 0px 20px #888;" />*@
+    
+

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SignalrPractice.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace SignalrPractice.Controllers
 {
@@ -139,6 +138,7 @@ namespace SignalrPractice.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            
             return View();
         }
 
@@ -151,12 +151,27 @@ namespace SignalrPractice.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,displayName=model.displayName,age=model.age,description=model.description };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //////////////my stuff/////////////////////
                     
+                    ApplicationDbContext db = new ApplicationDbContext();
+
+                    UserModel Adder = new UserModel();
+
+                    //add current user info to user class
+                    Adder.displayName = model.displayName;
+                    Adder.description = model.description;
+                    Adder.age = model.age;
+                    Adder.userName = model.Email;
+                    Adder.dateTime = DateTime.Now;
+                    //add model and save changes
+                    db.userModels.Add(Adder);
+                    db.SaveChanges();
+                    /////////////////////////////////////////
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -480,6 +495,40 @@ namespace SignalrPractice.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+        //helper method
+        //public void addtouser()
+        //{
+        //    //try
+        //    //{
+        //        ApplicationDbContext db = new ApplicationDbContext();
+        //        var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        //        var currentUser = manager.FindById(User.Identity.GetUserId());
+
+        //        //intantiate database
+
+
+        //        //instantiate Music class object
+        //        UserModel Adder = new UserModel();
+
+        //        //add current user info to user class
+        //        Adder.displayName = currentUser.displayName;
+        //        Adder.description = currentUser.description;
+        //        Adder.age = currentUser.age;
+        //        Adder.userName = currentUser.UserName;
+        //        Adder.dateTime = DateTime.Now;
+        //        //add model and save changes
+        //        db.userModels.Add(Adder);
+        //        db.SaveChanges();
+
+
+        //        //return  RedirectToAction("Index", "Home");
+        //    //}
+        //    //catch (Exception)
+        //    //{
+
+        //    //    throw;
+        //    //}
+        //}
         #endregion
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using SignalrPractice.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,9 +15,17 @@ namespace SignalrPractice
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+
+            //RouteTable.Routes.MapHubs(); ----obsoelete
+
+        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            // routes registered here
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+           // RouteTable.Routes.MapHubs();
         }
+        //try method get user async read carfully study
+        
+
     }
 }

@@ -1,0 +1,25 @@
+﻿
+@section scripts{
+
+<script src="~/Scripts/SignalR.js"> </script>
+    
+        <script type="text/javascript">
+            var moniter;
+            $(function () {
+                moniter = $.connection.moniter;
+                $.connection.hubs.start();
+            });
+
+            function onNewEvent(eventType, client) {
+                $('#messages').append('<li>' + eventType + ' from ' + client + '</li>');
+            };
+        </script>
+}
+
+    
+        <div>
+            <h2>SignalR monitoR</h2>
+            <ul id="messages"></ul>
+        </div>
+   
+

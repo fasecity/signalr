@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SignalrPractice.Models.UserModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<h2>Users Logs</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Age</th>
+            <th>UserName</th>
+            <th>Date of login</th>
+
+    </thead>
+    <tbody>
+        @*this is amazing this iterates using a foreach and displays the atributes of the model*@
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<th>@Html.DisplayFor(model => item.Id)</th>*@
+                <td>@Html.DisplayFor(model => item.displayName)</td>
+                <td>@Html.DisplayFor(model => item.description)</td>
+                <td>@Html.DisplayFor(model => item.age)</td>
+                <td>@Html.DisplayFor(model => item.userName)</td>
+                <td>@Html.DisplayFor(model => item.dateTime)</td>
+                <td>@{
+                    var imgUrl = Url.Content("~/Content/images/profile/" + Html.DisplayFor(model => item.userName) + ".png") + "?time=" + DateTime.Now.ToString();
+                }
+                <img src="@imgUrl" height="50" width="50" class="img-circle" /></td>
+            </tr>
+        }
+</table>
