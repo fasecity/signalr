@@ -4,6 +4,7 @@ using SignalrPractice.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -51,6 +52,20 @@ namespace SignalrPractice.Controllers
             var sortuser = from m in dblist select m;
             return View(sortuser.ToList());
            // return View();
+        }
+
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+          var app = db.userModels.Find(id);
+            if (app == null)
+            {
+                return HttpNotFound();
+            }
+            return View(app);
         }
     }
 }

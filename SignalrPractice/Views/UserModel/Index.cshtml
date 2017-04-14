@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <h2>Users Logs</h2>
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>Name</th>
@@ -17,21 +17,71 @@
             <th>Date of login</th>
 
     </thead>
-    <tbody>
+    <tbody>*@
         @*this is amazing this iterates using a foreach and displays the atributes of the model*@
-        @foreach (var item in Model)
+        @*@foreach (var item in Model)
         {
-            <tr>
+            <tr>*@
                 @*<th>@Html.DisplayFor(model => item.Id)</th>*@
-                <td>@Html.DisplayFor(model => item.displayName)</td>
+                @*<td>@Html.DisplayFor(model => item.displayName)</td>
                 <td>@Html.DisplayFor(model => item.description)</td>
                 <td>@Html.DisplayFor(model => item.age)</td>
                 <td>@Html.DisplayFor(model => item.userName)</td>
                 <td>@Html.DisplayFor(model => item.dateTime)</td>
-                <td>@{
-                    var imgUrl = Url.Content("~/Content/images/profile/" + Html.DisplayFor(model => item.userName) + ".png") + "?time=" + DateTime.Now.ToString();
-                }
-                <img src="@imgUrl" height="50" width="50" class="img-circle" /></td>
+                <td>
+                    @{
+                        var imgUrl = Url.Content("~/Content/images/profile/" + Html.DisplayFor(model => item.userName) + ".png") + "?time=" + DateTime.Now.ToString();
+                    }
+                    <img src="@imgUrl" height="50" width="50" class="img-circle" />
+                </td>
+
+
+
             </tr>
-        }
-</table>
+
+
+                        }
+</table>*@
+<style>
+    .card {
+        position: relative;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background-color: rgba(113, 109, 109, 0.32);
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: .60rem;
+        margin: 15px;
+    }
+    .btn-primary{
+        background-color:rgba(82, 19, 76, 0.87);
+    }
+</style>
+
+@foreach (var item in Model)
+{
+
+    var imgUrl = Url.Content("~/Content/images/profile/" + Html.DisplayFor(model => item.userName) + ".png") + "?time=" + DateTime.Now.ToString();
+
+            <div class="card" style="width: 20rem; text-align:center;display:inline-block;">
+                <img class="card-img-top" src="@imgUrl" alt="Card image cap" height="200" width="200" style="border-radius:.60rem;">
+                <div class="card-block" style="display:inline-block;">
+                    <h4 class="card-title">@Html.DisplayFor(model => item.displayName)</h4>
+                    <p class="card-text">Some quick example text to build</p>
+                    <button class="btn btn-primary">
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </button>
+                </div>
+            </div>
+  
+
+            @*<br />
+            <br />*@
+
+            }
