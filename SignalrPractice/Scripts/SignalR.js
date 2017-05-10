@@ -33,6 +33,9 @@
         });
   
 
+
+
+
 function onNewMessage(message) {
     // ... todo: validation !!!! :)
     $('#messages').append('<li>' + message + '</li>');

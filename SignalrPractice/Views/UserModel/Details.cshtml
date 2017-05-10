@@ -4,32 +4,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+@*<h2 style="font-family:Arial, Helvetica, sans-serif;">Profile</h2>*@
 @{var imgUrl = Url.Content("~/Content/images/profile/" + Html.DisplayFor(model => model.userName) + ".png") + "?time=" + DateTime.Now.ToString();
 }
-<img src="@imgUrl" height="50" width="50" class="img-circle" />
-<div>
-    <h4>Applicant</h4>
-    <hr />
+@*<img src="@imgUrl" height="200" width="200" class="img-circle"/>*@
+@*<div>
+    <h4>@Model.displayName</h4>
+    <hr 
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.userName)
+         
+       Name:    @Model.userName
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.age)
+
+       Description:     @Model.description
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.description)
-        </dt>
+      
 
-        <dd>
-            @Html.DisplayFor(model => model.displayName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
         </dl>
+</div*@
+
+@*//////////////////////////////////////////////////*@
+<style>
+ 
+.profile-header-container{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-header-img {
+    padding: 54px;
+}
+
+.profile-header-img > img.img-circle {
+    width: 120px;
+    height: 120px;
+    border: 2px solid #51D2B7;
+}
+
+.profile-header {
+    margin-top: 43px;
+}
+
+/**
+ * Ranking component
+ */
+.rank-label-container {
+    margin-top: -19px;
+    /* z-index: 1000; */
+    text-align: center;
+}
+
+.label.label-default.rank-label {
+    background-color: rgb(81, 210, 148);
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
+}
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="profile-header-container">
+            <div class="profile-header-img">
+                <img class="img-circle" src="@imgUrl" />
+                <!-- badge -->
+                <div class="ranklabelcontainer">
+                    <span class="label label-default rank-label">@Model.displayName</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
